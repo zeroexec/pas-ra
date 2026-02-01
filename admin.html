@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | LenteraSastra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .nav-active { @apply bg-indigo-600 text-white shadow-lg shadow-indigo-200; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-indigo-600 rounded-lg"></div>
+                    <span class="text-xl font-extrabold tracking-tighter">ADMIN.LS</span>
+                </div>
+                
+                <div class="hidden md:flex gap-2">
+                    <button onclick="switchTab('Puisi')" class="nav-btn px-6 py-2 rounded-full text-sm font-bold transition" data-category="Puisi">Puisi</button>
+                    <button onclick="switchTab('Cerpen')" class="nav-btn px-6 py-2 rounded-full text-sm font-bold transition" data-category="Cerpen">Cerpen</button>
+                    <button onclick="switchTab('Esai')" class="nav-btn px-6 py-2 rounded-full text-sm font-bold transition" data-category="Esai">Esai</button>
+                </div>
+
+                <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Panel Kendali 2026</div>
+            </div>
+        </div>
+        
+        <div class="md:hidden flex overflow-x-auto border-t border-slate-100 px-4 py-3 gap-2 no-scrollbar">
+            <button onclick="switchTab('Puisi')" class="nav-btn whitespace-nowrap px-6 py-2 rounded-full text-xs font-bold transition" data-category="Puisi">Puisi</button>
+            <button onclick="switchTab('Cerpen')" class="nav-btn whitespace-nowrap px-6 py-2 rounded-full text-xs font-bold transition" data-category="Cerpen">Cerpen</button>
+            <button onclick="switchTab('Esai')" class="nav-btn whitespace-nowrap px-6 py-2 rounded-full text-xs font-bold transition" data-category="Esai">Esai</button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 md:px-8 py-10">
+        <header class="mb-10">
+            <h1 id="currentTitle" class="text-3xl font-extrabold tracking-tight">Memuat Data...</h1>
+            <p class="text-slate-500 text-sm mt-1">Kelola kiriman naskah masuk dari peserta.</p>
+        </header>
+
+        <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200">
+                            <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Penulis</th>
+                            <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Instansi</th>
+                            <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Judul Karya</th>
+                            <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const SB_URL = "https://glyfbykxbpmtysnlaqcd.supabase.co";
+        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdseWZieWt4YnBtdHlzbmxhcWNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MzQ3ODUsImV4cCI6MjA4NTUxMDc4NX0.nxPRnJ_drfP_gb_MLFbf05COk6JpjyDtHAb4g_NcwYI";
+        const _supabase = supabase.createClient(SB_URL, SB_KEY);
+
+        let allData = [];
+        let currentActiveTab = 'Puisi';
+
+        async function fetchData() {
+            const { data, error } = await _supabase
+                .from('registrations')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (!error) {
+                allData = data;
+                switchTab(currentActiveTab);
+            }
+        }
+
+        function switchTab(category) {
+            currentActiveTab = category;
+            
+            // Update UI Nav
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-category') === category) {
+                    btn.classList.add('nav-active');
+                } else {
+                    btn.classList.remove('nav-active');
+                }
+            });
+
+            document.getElementById('currentTitle').innerText = `Kategori ${category}`;
+            renderTable(category);
+        }
+
+        function renderTable(category) {
+            const container = document.getElementById('adminTableBody');
+            const filtered = allData.filter(item => item.category === category);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<tr><td colspan="4" class="p-20 text-center text-slate-400 italic font-light text-sm">Belum ada naskah masuk untuk kategori ini.</td></tr>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => `
+                <tr class="border-b border-slate-100 hover:bg-slate-50/50 transition duration-300">
+                    <td class="px-6 py-5">
+                        <span class="block font-bold text-slate-800">${item.full_name}</span>
+                        <span class="text-xs text-slate-400">${item.email}</span>
+                    </td>
+                    <td class="px-6 py-5 text-sm text-slate-600">${item.institution}</td>
+                    <td class="px-6 py-5">
+                        <span class="text-sm font-semibold text-indigo-600 uppercase tracking-tight">${item.work_title}</span>
+                    </td>
+                    <td class="px-6 py-5 text-right">
+                        <a href="${item.work_file_url}" target="_blank" class="inline-flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-600 transition shadow-sm">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            UNDUH .DOCX
+                        </a>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Initial Load
+        fetchData();
+    </script>
+</body>
+</html>

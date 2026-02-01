@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khidmat Ramadhan 2026</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .gradient-text {
+            background: linear-gradient(90deg, #059669, #10B981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(249, 251, 250, 0.2), #F9FBFA), 
+                              url('https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #10B981; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+    </style>
+</head>
+<body class="bg-[#F9FBFA] text-slate-900 overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 glass border-b border-emerald-100">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="PASRA Logo" class="h-10 w-auto">
+                <div class="flex flex-col leading-tight">
+                    <span class="text-xl font-extrabold tracking-tighter gradient-text uppercase">PASRA</span>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Persatuan Santri Gapura</span>
+                </div>
+            </div>
+            <div class="space-x-6 hidden lg:flex items-center text-[10px] font-black uppercase tracking-widest">
+                <a href="#home" class="hover:text-emerald-600 transition">Beranda</a>
+                <a href="#timeline" class="hover:text-emerald-600 transition">Timeline</a>
+                <a href="#kategori" class="hover:text-emerald-600 transition">Lomba</a>
+                <a href="#hadiah" class="hover:text-emerald-600 transition">Hadiah</a>
+                <a href="#partisipan" class="hover:text-emerald-600 transition">Partisipan</a>
+                <a href="https://wa.me/628123456789" class="bg-emerald-600 text-white px-5 py-2.5 rounded-full hover:bg-emerald-700 transition shadow-lg shadow-emerald-200">Hubungi Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="relative hero-bg pt-52 pb-32 px-6 overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 bg-emerald-50/80 backdrop-blur text-emerald-700 px-4 py-2 rounded-full text-[10px] font-black tracking-[0.2em] uppercase mb-8 border border-emerald-100 shadow-sm">
+                LenteraSastra Nasional 2026
+            </div>
+            <h2 class="text-6xl md:text-8xl font-extrabold leading-none tracking-tighter">Ukir Jejakmu Lewat <br><span class="gradient-text">Kata-Kata.</span></h2>
+            
+            <div class="mt-12 flex flex-col items-center">
+                <div id="countdown-label" class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.4em] mb-6 bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-100 italic">Memproses Jadwal...</div>
+                
+                <div id="countdown" class="flex justify-center gap-4 md:gap-8 bg-white/40 backdrop-blur-sm p-8 rounded-[3rem] border border-emerald-100/50 w-fit">
+                    <div class="text-center">
+                        <span id="days" class="block text-5xl font-black text-slate-800 tracking-tighter">00</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Hari</span>
+                    </div>
+                    <div class="text-center">
+                        <span id="hours" class="block text-5xl font-black text-slate-800 tracking-tighter">00</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Jam</span>
+                    </div>
+                    <div class="text-center">
+                        <span id="minutes" class="block text-5xl font-black text-slate-800 tracking-tighter">00</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Menit</span>
+                    </div>
+                    <div class="text-center">
+                        <span id="seconds" class="block text-5xl font-black text-emerald-600 tracking-tighter">00</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Detik</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-14 flex flex-col md:flex-row justify-center gap-4">
+                <a href="#kategori" class="bg-slate-900 text-white px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-emerald-600 transition shadow-2xl shadow-slate-200">Daftar Sekarang</a>
+                <a href="juknis.pdf" target="_blank" class="bg-white border border-emerald-100 text-emerald-600 px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-emerald-50 transition flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Unduh Juknis
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" class="py-24 px-6 bg-white border-y border-emerald-50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-2xl font-black uppercase tracking-[0.2em] text-center mb-16 italic">Timeline Kompetisi</h2>
+            <div class="space-y-12 relative">
+                <div class="absolute left-[21px] top-2 bottom-2 w-0.5 bg-emerald-50"></div>
+                
+                <div class="flex gap-8 items-start relative">
+                    <div class="bg-emerald-600 text-white w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm z-10 shrink-0">01</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">Pembukaan Pendaftaran</h4>
+                        <p class="text-sm text-slate-400 font-medium">15 Februari 2026</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-8 items-start relative">
+                    <div class="bg-emerald-600 text-white w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm z-10 shrink-0">02</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">Batas Akhir Pengumpulan</h4>
+                        <p class="text-sm text-slate-400 font-medium">24 Februari 2026 (Pukul 23:59 WIB)</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-8 items-start relative opacity-40">
+                    <div class="bg-slate-200 text-slate-600 w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm z-10 shrink-0">03</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">Proses Penjurian</h4>
+                        <p class="text-sm text-slate-400 font-medium">25 - 28 Februari 2026</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kategori" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-2xl font-black uppercase tracking-[0.2em] mb-4">Pilih Bidang Lomba</h2>
+                <div class="h-1 w-12 bg-emerald-500 mx-auto rounded-full"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6 text-center">
+                <a href="puisi.html" class="p-12 rounded-[3rem] border border-emerald-50 bg-white hover:shadow-2xl hover:shadow-emerald-100 transition-all group">
+                    <h3 class="text-xl font-black mb-2 uppercase italic group-hover:text-emerald-600 transition">Cipta Puisi</h3>
+                    <p class="text-[10px] text-slate-400 mb-8 uppercase tracking-widest font-bold">Suara di Balik Gapura</p>
+                    <span class="text-[10px] font-black border border-emerald-100 text-emerald-600 px-6 py-2.5 rounded-full uppercase tracking-[0.2em] group-hover:bg-emerald-600 group-hover:text-white transition">Daftar</span>
+                </a>
+                <a href="cerpen.html" class="p-12 rounded-[3rem] border border-emerald-50 bg-white hover:shadow-2xl hover:shadow-emerald-100 transition-all group">
+                    <h3 class="text-xl font-black mb-2 uppercase italic group-hover:text-emerald-600 transition">Cerita Pendek</h3>
+                    <p class="text-[10px] text-slate-400 mb-8 uppercase tracking-widest font-bold">Fiksi Santri Nusantara</p>
+                    <span class="text-[10px] font-black border border-emerald-100 text-emerald-600 px-6 py-2.5 rounded-full uppercase tracking-[0.2em] group-hover:bg-emerald-600 group-hover:text-white transition">Daftar</span>
+                </a>
+                <a href="esai.html" class="p-12 rounded-[3rem] border border-emerald-50 bg-white hover:shadow-2xl hover:shadow-emerald-100 transition-all group">
+                    <h3 class="text-xl font-black mb-2 uppercase italic group-hover:text-emerald-600 transition">Esai Kritik</h3>
+                    <p class="text-[10px] text-slate-400 mb-8 uppercase tracking-widest font-bold">Literasi Pesantren</p>
+                    <span class="text-[10px] font-black border border-emerald-100 text-emerald-600 px-6 py-2.5 rounded-full uppercase tracking-[0.2em] group-hover:bg-emerald-600 group-hover:text-white transition">Daftar</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="hadiah" class="py-24 px-6 bg-slate-900 text-white rounded-[4rem] mx-4 my-10 shadow-2xl">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-20">
+                <div>
+                    <h2 class="text-3xl font-black uppercase tracking-widest mb-12 text-emerald-400 italic">Penghargaan</h2>
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-6">
+                            <div class="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center font-black">01</div>
+                            <p class="text-sm font-medium">Uang Pembinaan + Tropi + Sertifikat Nasional</p>
+                        </div>
+                        <div class="flex items-center gap-6">
+                            <div class="w-12 h-12 bg-emerald-800 rounded-2xl flex items-center justify-center font-black">02</div>
+                            <p class="text-sm font-medium">Karya Pemenang akan Dibukukan secara Nasional</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black uppercase tracking-widest mb-12 text-emerald-400 italic">Dewan Juri</h2>
+                    <div class="space-y-4">
+                        <div class="p-6 bg-white/5 rounded-3xl border border-white/10">
+                            <p class="font-bold text-lg">KH. Ahmad Ridwan</p>
+                            <p class="text-[10px] text-emerald-500 uppercase font-black tracking-widest">Budayawan & Sastrawan</p>
+                        </div>
+                        <div class="p-6 bg-white/5 rounded-3xl border border-white/10">
+                            <p class="font-bold text-lg">Ust. M. Syakir</p>
+                            <p class="text-[10px] text-emerald-500 uppercase font-black tracking-widest">Editor Jurnal Literasi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="partisipan" class="py-24 px-6 max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-extrabold tracking-tighter italic mb-2">Daftar Partisipan</h2>
+        <div class="flex justify-center items-center gap-2 mb-10">
+            <span id="stat-pendaftar" class="text-emerald-600 text-4xl font-black">0</span>
+            <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Penulis Terdaftar</span>
+        </div>
+        
+        <input type="text" id="searchInput" onkeyup="filterParticipants()" placeholder="Cari nama Anda di sini..." 
+               class="w-full max-w-md px-8 py-5 rounded-3xl bg-white border border-emerald-100 outline-none shadow-sm text-sm mb-10 focus:ring-4 focus:ring-emerald-500/10 transition-all">
+
+        <div class="bg-white rounded-[3rem] border border-emerald-50 shadow-2xl shadow-emerald-900/5 overflow-hidden">
+            <div class="max-h-[400px] overflow-y-auto custom-scroll">
+                <table class="w-full text-left">
+                    <tbody id="participantsBody" class="divide-y divide-emerald-50">
+                        <tr><td class="p-20 text-center text-slate-300 italic text-sm">Menghubungkan ke database...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-24 text-center bg-white border-t border-emerald-50">
+        <div class="max-w-md mx-auto h-px bg-gradient-to-r from-transparent via-emerald-100 to-transparent mb-12"></div>
+        
+        <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-10">
+            <a href="login.html" class="inline-flex items-center gap-4 bg-slate-50 px-8 py-4 rounded-full border border-slate-100 shadow-sm hover:bg-emerald-50 hover:border-emerald-200 transition-all duration-300 group">
+                <img src="logo.png" alt="Dev Logo" class="h-6 w-6 group-hover:scale-110 transition">
+                <div class="text-left leading-tight">
+                    <span class="block text-[8px] font-black text-slate-400 uppercase tracking-widest">Developed with ❤️ by</span>
+                    <span class="text-xs font-extrabold text-slate-800 tracking-tight group-hover:text-emerald-600 transition">Adlan Madjied Ridho</span>
+                </div>
+            </a>
+
+            <a href="https://wa.me/6281358652365" target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 text-white px-6 py-4 rounded-full shadow-lg shadow-emerald-100 hover:bg-emerald-700 hover:scale-105 transition-all duration-300">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span class="text-[10px] font-black uppercase tracking-widest">Contact Me</span>
+            </a>
+        </div>
+
+        <p class="text-slate-400 text-[9px] font-black tracking-[0.5em] uppercase px-6">
+            &copy; 2026 PERSATUAN SANTRI GAPURA
+        </p>
+    </footer>
+
+    <script>
+        const SB_URL = "https://glyfbykxbpmtysnlaqcd.supabase.co";
+        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdseWZieWt4YnBtdHlzbmxhcWNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MzQ3ODUsImV4cCI6MjA4NTUxMDc4NX0.nxPRnJ_drfP_gb_MLFbf05COk6JpjyDtHAb4g_NcwYI";
+        const _supabase = supabase.createClient(SB_URL, SB_KEY);
+
+        let allParticipants = [];
+
+        // Countdown Logic with Dual State (Start Date vs End Date)
+        const startDate = new Date("February 15, 2026 00:00:00").getTime();
+        const endDate = new Date("February 24, 2026 23:59:59").getTime();
+        
+        setInterval(() => {
+            const now = new Date().getTime();
+            let label = "";
+            let target = 0;
+
+            if (now < startDate) {
+                label = "Pendaftaran Dimulai Dalam";
+                target = startDate;
+            } else if (now < endDate) {
+                label = "Pendaftaran Berakhir Dalam";
+                target = endDate;
+            } else {
+                document.getElementById('countdown-label').innerText = "Pendaftaran Sudah Ditutup";
+                document.getElementById('countdown').style.opacity = "0.5";
+                return;
+            }
+
+            const distance = target - now;
+            document.getElementById('countdown-label').innerText = label;
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(d).padStart(2, '0');
+            document.getElementById('hours').innerText = String(h).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(m).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(s).padStart(2, '0');
+        }, 1000);
+
+        async function init() {
+            const { data, count, error } = await _supabase.from('registrations').select('full_name, category', { count: 'exact' });
+            if (!error) {
+                allParticipants = data;
+                document.getElementById('stat-pendaftar').innerText = count || 0;
+                renderList(allParticipants);
+            }
+        }
+
+        function renderList(list) {
+            const container = document.getElementById('participantsBody');
+            if (list.length === 0) {
+                container.innerHTML = '<tr><td class="p-20 text-center text-slate-300 uppercase text-[9px] font-black tracking-widest">Belum ada penulis terdaftar</td></tr>';
+                return;
+            }
+            container.innerHTML = list.map(item => `
+                <tr class="hover:bg-emerald-50/50 transition-all duration-300">
+                    <td class="px-12 py-7 flex justify-between items-center">
+                        <span class="text-sm font-bold text-slate-700 uppercase tracking-tighter">${item.full_name}</span>
+                        <span class="text-[8px] font-black border border-emerald-100 bg-white text-emerald-600 px-4 py-1.5 rounded-full uppercase tracking-widest">${item.category}</span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterParticipants() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allParticipants.filter(p => p.full_name.toLowerCase().includes(query));
+            renderList(filtered);
+        }
+
+        init();
+    </script>
+</body>
+</html>

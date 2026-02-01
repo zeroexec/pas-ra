@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Lomba Esai | LenteraSastra 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #F9FBFA; 
+            min-height: 100vh;
+            position: relative;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+        }
+        .input-soft {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .input-soft:focus {
+            background: #ffffff;
+            border-color: #10B981;
+            box-shadow: 0 12px 24px -8px rgba(16, 185, 129, 0.15);
+            outline: none;
+        }
+        .blob-emerald {
+            position: fixed; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%; z-index: -1; filter: blur(60px);
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #059669, #10B981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-back {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .btn-back:hover {
+            background: #10B981;
+            color: white !important;
+            border-color: #10B981;
+            transform: translateX(5px);
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-6">
+
+    <div class="blob-emerald -top-40 -left-20"></div>
+    <div class="blob-emerald -bottom-40 -right-20"></div>
+
+    <div class="absolute top-8 left-8">
+        <a href="index.html" class="btn-back inline-flex items-center gap-3 px-5 py-2.5 rounded-full text-[10px] font-black text-emerald-700 uppercase tracking-[0.2em] group">
+            <div class="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center group-hover:bg-emerald-500 transition-colors">
+                <svg class="w-2.5 h-2.5 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </div>
+            Kembali
+        </a>
+    </div>
+
+    <main class="w-full max-w-xl">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold mt-6 tracking-tighter">Lomba <span class="gradient-text">Esai</span></h1>
+            <p class="text-slate-500 text-sm mt-3 font-light max-w-xs mx-auto">"Tajamkan pena, sampaikan gagasan solutif bagi bangsa."</p>
+        </div>
+
+        <div class="glass-panel p-10 md:p-14 rounded-[3.5rem] shadow-2xl shadow-emerald-900/5">
+            <form id="esaiForm" class="space-y-7">
+                <div class="space-y-4">
+                    <input type="text" id="full_name" placeholder="Nama Lengkap Sesuai KTP" required class="input-soft w-full px-8 py-5 rounded-3xl text-sm font-medium">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="email" id="email" placeholder="Alamat Email" required class="input-soft px-8 py-5 rounded-3xl text-sm">
+                        <input type="tel" id="whatsapp" placeholder="No. WhatsApp" required class="input-soft px-8 py-5 rounded-3xl text-sm">
+                    </div>
+                    <input type="text" id="institution" placeholder="Universitas / Instansi / Kota" required class="input-soft w-full px-8 py-5 rounded-3xl text-sm">
+                </div>
+
+                <div class="h-px bg-emerald-100/50"></div>
+
+                <div class="space-y-4">
+                    <input type="text" id="work_title" placeholder="Judul Esai" required class="input-soft w-full px-8 py-5 rounded-3xl text-sm font-bold text-slate-800 uppercase tracking-tight">
+                    
+                    <div class="bg-emerald-50/30 p-8 rounded-[2.5rem] border border-emerald-100/50 text-center">
+                        <label class="block text-[10px] font-black text-emerald-600 mb-4 uppercase tracking-[0.2em]">Upload Naskah (Format .docx)</label>
+                        <input type="file" id="work_file" accept=".docx" required 
+                            class="block w-full text-xs text-slate-400 file:mr-auto file:mb-0 file:py-3 file:px-8 file:rounded-full file:border-0 file:text-[10px] file:font-black file:uppercase file:tracking-widest file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 transition cursor-pointer">
+                    </div>
+                </div>
+
+                <div class="space-y-3 px-4">
+                    <label class="flex items-start gap-4 cursor-pointer">
+                        <input type="checkbox" required class="mt-1 w-4 h-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500">
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider leading-relaxed">Pernyataan Orisinalitas & Anti-Plagiasi</span>
+                    </label>
+                    <label class="flex items-start gap-4 cursor-pointer">
+                        <input type="checkbox" required class="mt-1 w-4 h-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500">
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider leading-relaxed">Izin Publikasi Hak Cipta Panitia</span>
+                    </label>
+                    <label class="flex items-start gap-4 cursor-pointer">
+                        <input type="checkbox" required class="mt-1 w-4 h-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500">
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider leading-relaxed">Persetujuan Tampilan Nama Publik</span>
+                    </label>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-slate-900 text-white py-6 rounded-3xl font-black text-xs uppercase tracking-[0.4em] hover:bg-emerald-600 hover:shadow-2xl hover:shadow-emerald-200 transition-all duration-700 active:scale-95">
+                    Kirim Esai Sekarang
+                </button>
+            </form>
+
+            <div id="successMsg" class="hidden text-center py-10">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-emerald-50 text-emerald-600 rounded-full mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h2 class="text-3xl font-black tracking-tighter mb-4 uppercase text-slate-900">Gagasan Diterima</h2>
+                <p class="text-slate-400 text-sm font-light mb-10">"Analisis kritis Anda telah kami simpan di arsip pusat."</p>
+                <a href="index.html" class="px-10 py-4 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition">Kembali</a>
+            </div>
+        </div>
+
+        <footer class="mt-12 text-center">
+            <p class="text-[9px] font-black text-slate-300 uppercase tracking-[0.4em]">&copy; 2026 Persatuan Santri Gapura</p>
+        </footer>
+    </main>
+
+    <script>
+        const SB_URL = "https://glyfbykxbpmtysnlaqcd.supabase.co";
+        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdseWZieWt4YnBtdHlzbmxhcWNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MzQ3ODUsImV4cCI6MjA4NTUxMDc4NX0.nxPRnJ_drfP_gb_MLFbf05COk6JpjyDtHAb4g_NcwYI";
+        const _supabase = supabase.createClient(SB_URL, SB_KEY);
+
+        const form = document.getElementById('esaiForm');
+        const btn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.innerText = "MEMPROSES GAGASAN...";
+
+            const file = document.getElementById('work_file').files[0];
+            const fileName = `esai_${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+
+            try {
+                const { data: upData, error: upErr } = await _supabase.storage.from('karya').upload(`esai/${fileName}`, file);
+                if(upErr) throw upErr;
+
+                const { data: { publicUrl } } = _supabase.storage.from('karya').getPublicUrl(`esai/${fileName}`);
+
+                const { error: dbErr } = await _supabase.from('registrations').insert([{
+                    full_name: document.getElementById('full_name').value,
+                    email: document.getElementById('email').value,
+                    whatsapp: document.getElementById('whatsapp').value,
+                    institution: document.getElementById('institution').value,
+                    work_title: document.getElementById('work_title').value,
+                    category: "Esai",
+                    work_file_url: publicUrl
+                }]);
+
+                if(dbErr) throw dbErr;
+
+                form.classList.add('hidden');
+                document.getElementById('successMsg').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (err) {
+                alert("Gagal mengirim: " + err.message);
+                btn.disabled = false;
+                btn.innerText = "Kirim Esai Sekarang";
+            }
+        });
+    </script>
+</body>
+</html>
