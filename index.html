@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intro Khidmat Ramadhan 2026</title>
+    
+    <link rel="prefetch" href="beranda.html">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -14,24 +17,56 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Container utama sebagai titik pusat */
-        .intro-container {
-            position: relative;
+        /* Preloader Teks */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-text {
+            color: #d4af37;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Kontainer Utama */
+        .main-anchor {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
+            position: relative;
+            visibility: hidden; /* Sembunyikan sampai aset siap */
         }
 
-        /* LOGO: Tetap mati di tengah layar */
+        /* Trigger Animasi saat class .is-ready aktif */
+        .is-ready .main-anchor { visibility: visible; }
+
         .logo-box {
             position: relative;
             z-index: 10;
             opacity: 0;
-            /* Bounce halus di tengah */
+            flex-shrink: 0;
+        }
+
+        .is-ready .logo-box {
             animation: bounceIn 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
@@ -43,25 +78,22 @@
             filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
         }
 
-        /* TEKS REVEAL: Muncul dari balik logo tanpa mendorong logo */
         .text-reveal {
-            position: absolute; /* Mengunci agar tidak mendorong elemen lain */
-            left: 50%; /* Mulai dari tengah layar */
-            padding-left: 80px; /* Jarak dari as tengah (setengah lebar logo + celah) */
             width: 0;
             overflow: hidden;
             white-space: nowrap;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            opacity: 0;
-            /* Muncul menyapu */
-            animation: expandText 1s cubic-bezier(0.77, 0, 0.175, 1) forwards 1.5s;
+        }
+
+        .is-ready .text-reveal {
+            animation: expandAndCenter 1s cubic-bezier(0.77, 0, 0.175, 1) forwards 1.8s;
         }
 
         .title {
             color: #ffffff;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -70,61 +102,48 @@
 
         .subtitle {
             color: #d4af37;
-            font-size: 1rem;
+            font-size: 1.1rem;
             letter-spacing: 4px;
             text-transform: uppercase;
+            margin-top: 2px;
         }
 
-        /* KEYFRAMES */
-
-        /* Bounce tetap di tengah layar */
         @keyframes bounceIn {
             0% { opacity: 0; transform: scale(0.3); }
             60% { opacity: 1; transform: scale(1.08); }
-            80% { transform: scale(0.97); }
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* Teks menyapu keluar dari titik tengah */
-        @keyframes expandText {
-            0% { 
-                width: 0; 
-                opacity: 0;
-                border-left: 3px solid #d4af37; 
-            }
-            10% { opacity: 1; }
-            100% { 
-                width: 500px; /* Jangkauan sapuan */
-                opacity: 1;
-                border-left: 3px solid transparent; 
-            }
+        @keyframes expandAndCenter {
+            0% { width: 0; padding-left: 0; border-left: 3px solid #d4af37; }
+            100% { width: 380px; padding-left: 25px; border-left: 3px solid transparent; }
         }
 
-        /* Exit Transition */
         .fade-exit {
             transition: opacity 0.8s ease;
-            opacity: 0;
+            opacity: 0 !important;
         }
 
-        /* Responsive Mobile */
         @media (max-width: 600px) {
-            .logo-box img { width: 100px; }
-            .text-reveal { padding-left: 60px; } /* Sesuaikan jarak di HP */
-            .title { font-size: 1.3rem; }
-            .subtitle { font-size: 0.75rem; }
-            
-            @keyframes expandText {
-                0% { width: 0; opacity: 0; border-left: 2px solid #d4af37; }
-                100% { width: 250px; opacity: 1; border-left: 2px solid transparent; }
+            .logo-box img { width: 90px; }
+            .title { font-size: 1.4rem; }
+            .subtitle { font-size: 0.8rem; letter-spacing: 2px; }
+            @keyframes expandAndCenter {
+                0% { width: 0; padding-left: 0; border-left: 2px solid #d4af37; }
+                100% { width: 200px; padding-left: 15px; border-left: 2px solid transparent; }
             }
         }
     </style>
 </head>
-<body id="body-screen">
+<body id="container-body">
 
-    <div class="intro-container">
+    <div id="preloader">
+        <div class="loading-text">Memuat...</div>
+    </div>
+
+    <div class="main-anchor">
         <div class="logo-box">
-            <img src="logo.png" alt="Logo Organisasi">
+            <img src="logo.png" id="main-logo" alt="Logo Organisasi">
         </div>
 
         <div class="text-reveal">
@@ -134,15 +153,36 @@
     </div>
 
     <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('body-screen').classList.add('fade-exit');
-                setTimeout(() => {
-                    window.location.href = "beranda.html";
-                }, 800);
-            }, 4500);
-        });
-    </script>
+        const body = document.getElementById('container-body');
+        const preloader = document.getElementById('preloader');
+        const logoImg = document.getElementById('main-logo');
 
+        function startIntro() {
+            // Berikan sedikit jeda tambahan untuk meyakinkan prefetch berjalan
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                    body.classList.add('is-ready');
+                }, 500);
+
+                // Jadwal pindah halaman
+                setTimeout(() => {
+                    body.classList.add('fade-exit');
+                    setTimeout(() => {
+                        window.location.href = "beranda.html";
+                    }, 800);
+                }, 5000); 
+            }, 600); 
+        }
+
+        // Cek pemuatan logo
+        if (logoImg.complete) {
+            startIntro();
+        } else {
+            logoImg.addEventListener('load', startIntro);
+            logoImg.addEventListener('error', startIntro);
+        }
+    </script>
 </body>
 </html>

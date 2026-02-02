@@ -74,8 +74,9 @@
 
     <main class="w-full max-w-xl">
         <div class="text-center mb-12">
-            <h1 class="text-5xl font-extrabold mt-6 tracking-tighter">Lomba <span class="gradient-text">Esai</span></h1>
+            <h1 class="text-5xl font-extrabold mt-6 tracking-tighter text-slate-900">Lomba <span class="gradient-text">Esai</span></h1>
             <p class="text-slate-500 text-sm mt-3 font-light max-w-xs mx-auto">"Tajamkan pena, sampaikan gagasan solutif bagi bangsa."</p>
+            <div id="quotaCounter" class="mt-4 text-[10px] font-black text-emerald-600 uppercase tracking-widest bg-emerald-50 inline-block px-4 py-1.5 rounded-full border border-emerald-100">Memeriksa Kuota...</div>
         </div>
 
         <div class="glass-panel p-10 md:p-14 rounded-[3.5rem] shadow-2xl shadow-emerald-900/5">
@@ -94,25 +95,33 @@
                 <div class="space-y-4">
                     <input type="text" id="work_title" placeholder="Judul Esai" required class="input-soft w-full px-8 py-5 rounded-3xl text-sm font-bold text-slate-800 uppercase tracking-tight">
                     
-                    <div class="bg-emerald-50/30 p-8 rounded-[2.5rem] border border-emerald-100/50 text-center">
-                        <label class="block text-[10px] font-black text-emerald-600 mb-4 uppercase tracking-[0.2em]">Upload Naskah (Format .docx)</label>
-                        <input type="file" id="work_file" accept=".docx" required 
-                            class="block w-full text-xs text-slate-400 file:mr-auto file:mb-0 file:py-3 file:px-8 file:rounded-full file:border-0 file:text-[10px] file:font-black file:uppercase file:tracking-widest file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 transition cursor-pointer">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-emerald-50/30 p-6 rounded-[2.5rem] border border-emerald-100/50 text-center">
+                            <label class="block text-[10px] font-black text-emerald-600 mb-3 uppercase tracking-[0.2em]">Upload Naskah (.docx)</label>
+                            <input type="file" id="work_file" accept=".docx" required 
+                                class="block w-full text-xs text-slate-400 file:mr-auto file:py-2.5 file:px-6 file:rounded-full file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 transition cursor-pointer">
+                        </div>
+
+                        <div class="bg-slate-50/50 p-6 rounded-[2.5rem] border border-slate-100 text-center">
+                            <label class="block text-[10px] font-black text-slate-400 mb-3 uppercase tracking-[0.2em]">Bukti Pembayaran (Opsional - JPG/PNG)</label>
+                            <input type="file" id="payment_file" accept="image/*" 
+                                class="block w-full text-xs text-slate-400 file:mr-auto file:py-2.5 file:px-6 file:rounded-full file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-slate-400 file:text-white hover:file:bg-slate-500 transition cursor-pointer">
+                        </div>
                     </div>
                 </div>
 
                 <div class="space-y-3 px-4">
-                    <label class="flex items-start gap-4 cursor-pointer">
+                    <label class="flex items-start gap-4 cursor-pointer group">
                         <input type="checkbox" required class="mt-1 w-4 h-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500">
-                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider leading-relaxed">Pernyataan Orisinalitas & Anti-Plagiasi</span>
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider leading-relaxed group-hover:text-emerald-600 transition">Pernyataan Orisinalitas & Anti-Plagiasi</span>
                     </label>
-                    <label class="flex items-start gap-4 cursor-pointer">
+                    <label class="flex items-start gap-4 cursor-pointer group">
                         <input type="checkbox" required class="mt-1 w-4 h-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500">
-                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider leading-relaxed">Izin Publikasi Hak Cipta Panitia</span>
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider leading-relaxed group-hover:text-emerald-600 transition">Sudah Bayar Pada Panitia</span>
                     </label>
-                    <label class="flex items-start gap-4 cursor-pointer">
+                    <label class="flex items-start gap-4 cursor-pointer group">
                         <input type="checkbox" required class="mt-1 w-4 h-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500">
-                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider leading-relaxed">Persetujuan Tampilan Nama Publik</span>
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider leading-relaxed group-hover:text-emerald-600 transition">Persetujuan Tampilan Nama Publik</span>
                     </label>
                 </div>
 
@@ -129,6 +138,15 @@
                 <p class="text-slate-400 text-sm font-light mb-10">"Analisis kritis Anda telah kami simpan di arsip pusat."</p>
                 <a href="index.html" class="px-10 py-4 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition">Kembali</a>
             </div>
+
+            <div id="fullMsg" class="hidden text-center py-10">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-red-50 text-red-600 rounded-full mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </div>
+                <h2 class="text-3xl font-black tracking-tighter mb-4 uppercase text-slate-900">Kuota Penuh</h2>
+                <p class="text-slate-400 text-sm font-light mb-10">Mohon maaf, pendaftaran kategori Esai telah mencapai batas 50 peserta.</p>
+                <a href="index.html" class="px-10 py-4 bg-slate-100 text-slate-600 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition">Kembali</a>
+            </div>
         </div>
 
         <footer class="mt-12 text-center">
@@ -143,21 +161,63 @@
 
         const form = document.getElementById('esaiForm');
         const btn = document.getElementById('submitBtn');
+        const quotaCounter = document.getElementById('quotaCounter');
+        const MAX_QUOTA = 50;
+
+        // Fungsi cek kuota saat halaman dibuka
+        async function checkQuota() {
+            try {
+                const { count, error } = await _supabase
+                    .from('registrations')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('category', 'Esai');
+
+                if (error) throw error;
+
+                if (count >= MAX_QUOTA) {
+                    form.classList.add('hidden');
+                    document.getElementById('fullMsg').classList.remove('hidden');
+                    quotaCounter.innerText = "KUOTA PENUH";
+                    quotaCounter.classList.replace('text-emerald-600', 'text-red-500');
+                } else {
+                    quotaCounter.innerText = `SISA KUOTA: ${MAX_QUOTA - count} / ${MAX_QUOTA}`;
+                }
+            } catch (err) {
+                quotaCounter.innerText = "GAGAL CEK KUOTA";
+            }
+        }
+
+        checkQuota();
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             btn.disabled = true;
             btn.innerText = "MEMPROSES GAGASAN...";
 
-            const file = document.getElementById('work_file').files[0];
-            const fileName = `esai_${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+            const workFile = document.getElementById('work_file').files[0];
+            const payFile = document.getElementById('payment_file').files[0];
+            const timestamp = Date.now();
+            
+            const workFileName = `esai_${timestamp}_${workFile.name.replace(/\s+/g, '_')}`;
+            let payPublicUrl = null;
 
             try {
-                const { data: upData, error: upErr } = await _supabase.storage.from('karya').upload(`esai/${fileName}`, file);
+                // 1. Upload Naskah (Wajib)
+                const { error: upErr } = await _supabase.storage.from('karya').upload(`esai/${workFileName}`, workFile);
                 if(upErr) throw upErr;
+                const { data: { publicUrl: workPublicUrl } } = _supabase.storage.from('karya').getPublicUrl(`esai/${workFileName}`);
 
-                const { data: { publicUrl } } = _supabase.storage.from('karya').getPublicUrl(`esai/${fileName}`);
+                // 2. Upload Pembayaran (Hanya jika ada file dipilih)
+                if (payFile) {
+                    const payFileName = `bayar_esai_${timestamp}_${payFile.name.replace(/\s+/g, '_')}`;
+                    const { error: payErr } = await _supabase.storage.from('karya').upload(`pembayaran/${payFileName}`, payFile);
+                    if(!payErr) {
+                        const { data: { publicUrl } } = _supabase.storage.from('karya').getPublicUrl(`pembayaran/${payFileName}`);
+                        payPublicUrl = publicUrl;
+                    }
+                }
 
+                // 3. Insert Database
                 const { error: dbErr } = await _supabase.from('registrations').insert([{
                     full_name: document.getElementById('full_name').value,
                     email: document.getElementById('email').value,
@@ -165,13 +225,15 @@
                     institution: document.getElementById('institution').value,
                     work_title: document.getElementById('work_title').value,
                     category: "Esai",
-                    work_file_url: publicUrl
+                    work_file_url: workPublicUrl,
+                    payment_url: payPublicUrl // Akan null jika tidak upload
                 }]);
 
                 if(dbErr) throw dbErr;
 
                 form.classList.add('hidden');
                 document.getElementById('successMsg').classList.remove('hidden');
+                quotaCounter.classList.add('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
 
             } catch (err) {
