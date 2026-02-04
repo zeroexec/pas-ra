@@ -1,188 +1,369 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intro Khidmat Ramadhan 2026</title>
-    
-    <link rel="prefetch" href="beranda.html">
-    
+    <title>Khidmat Ramadhan 2026 | PASRA</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: #000000;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .gradient-text {
+            background: linear-gradient(90deg, #059669, #10B981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(249, 251, 250, 0.3), #F9FBFA), 
+                            url('https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #10B981; border-radius: 10px; }
 
-        /* Preloader Teks */
-        #preloader {
+        /* --- Animasi Fade In dari Hitam --- */
+        #entrance-overlay {
             position: fixed;
-            inset: 0;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            transition: opacity 0.5s ease;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 9999;
+            pointer-events: none;
+            animation: fadeOutCenter 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
         }
 
-        .loading-text {
-            color: #d4af37;
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
-
-        /* Kontainer Utama */
-        .main-anchor {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            visibility: hidden; /* Sembunyikan sampai aset siap */
-        }
-
-        /* Trigger Animasi saat class .is-ready aktif */
-        .is-ready .main-anchor { visibility: visible; }
-
-        .logo-box {
-            position: relative;
-            z-index: 10;
-            opacity: 0;
-            flex-shrink: 0;
-        }
-
-        .is-ready .logo-box {
-            animation: bounceIn 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        .logo-box img {
-            width: 140px; 
-            height: auto;
-            display: block;
-            image-rendering: -webkit-optimize-contrast;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
-        }
-
-        .text-reveal {
-            width: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .is-ready .text-reveal {
-            animation: expandAndCenter 1s cubic-bezier(0.77, 0, 0.175, 1) forwards 1.8s;
-        }
-
-        .title {
-            color: #ffffff;
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            line-height: 1.1;
-        }
-
-        .subtitle {
-            color: #d4af37;
-            font-size: 1.1rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-top: 2px;
-        }
-
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale(0.3); }
-            60% { opacity: 1; transform: scale(1.08); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes expandAndCenter {
-            0% { width: 0; padding-left: 0; border-left: 3px solid #d4af37; }
-            100% { width: 380px; padding-left: 25px; border-left: 3px solid transparent; }
-        }
-
-        .fade-exit {
-            transition: opacity 0.8s ease;
-            opacity: 0 !important;
-        }
-
-        @media (max-width: 600px) {
-            .logo-box img { width: 90px; }
-            .title { font-size: 1.4rem; }
-            .subtitle { font-size: 0.8rem; letter-spacing: 2px; }
-            @keyframes expandAndCenter {
-                0% { width: 0; padding-left: 0; border-left: 2px solid #d4af37; }
-                100% { width: 200px; padding-left: 15px; border-left: 2px solid transparent; }
+        @keyframes fadeOutCenter {
+            0% {
+                opacity: 1;
+                clip-path: circle(150% at 50% 50%);
+            }
+            100% {
+                opacity: 0;
+                clip-path: circle(0% at 50% 50%);
+                visibility: hidden;
             }
         }
     </style>
 </head>
-<body id="container-body">
+<body class="bg-[#F9FBFA] text-slate-900 overflow-x-hidden">
 
-    <div id="preloader">
-        <div class="loading-text">Memuat...</div>
-    </div>
+    <div id="entrance-overlay"></div>
 
-    <div class="main-anchor">
-        <div class="logo-box">
-            <img src="logo.png" id="main-logo" alt="Logo Organisasi">
+    <nav class="fixed w-full z-50 glass border-b border-emerald-100">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="PASRA Logo" class="h-10 w-auto">
+                <div class="flex flex-col leading-tight">
+                    <span class="text-xl font-extrabold tracking-tighter gradient-text uppercase">PASRA</span>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Persatuan Santri Gapura</span>
+                </div>
+            </div>
+            <div class="space-x-6 hidden lg:flex items-center text-[10px] font-black uppercase tracking-widest">
+                <a href="#home" class="hover:text-emerald-600 transition">Beranda</a>
+                <a href="#timeline" class="hover:text-emerald-600 transition">Timeline</a>
+                <a href="#kategori" class="hover:text-emerald-600 transition">Lomba & HTM</a>
+                <a href="#ketentuan" class="hover:text-emerald-600 transition">Ketentuan</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="relative hero-bg pt-52 pb-32 px-6">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 bg-emerald-50/80 backdrop-blur text-emerald-700 px-4 py-2 rounded-full text-[10px] font-black tracking-[0.2em] uppercase mb-8 border border-emerald-100">
+                Lentera Sastra Nasional 2026 • Se-Kabupaten Sumenep
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight tracking-tighter mb-6">
+                <span class="gradient-text font-black">Keislaman</span>
+            </h1>
+            
+            <div class="mt-12 flex flex-col items-center">
+                <div id="countdown-label" class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.4em] mb-6 bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-100 italic text-center">Memproses Jadwal...</div>
+                
+                <div id="countdown" class="flex justify-center gap-4 md:gap-8 bg-white/40 backdrop-blur-sm p-8 rounded-[3rem] border border-emerald-100/50 w-fit">
+                    <div class="text-center">
+                        <span id="days" class="block text-5xl font-black text-slate-800 tracking-tighter">00</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Hari</span>
+                    </div>
+                    <div class="text-center">
+                        <span id="hours" class="block text-5xl font-black text-slate-800 tracking-tighter">00</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Jam</span>
+                    </div>
+                    <div class="text-center">
+                        <span id="minutes" class="block text-5xl font-black text-slate-800 tracking-tighter">00</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Menit</span>
+                    </div>
+                    <div class="text-center">
+                        <span id="seconds" class="block text-5xl font-black text-emerald-600 tracking-tighter">00</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Detik</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-14 flex flex-col md:flex-row justify-center gap-4">
+                <a href="#kategori" class="bg-slate-900 text-white px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-emerald-600 transition shadow-2xl shadow-slate-200">Kirim Karya Sekarang</a>
+                <a href="juknis.pdf" download="juknis.pdf" class="bg-white border border-emerald-100 text-emerald-600 px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-emerald-50 transition flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Unduh Juknis
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" class="py-24 px-6 bg-white border-y border-emerald-50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-2xl font-black uppercase tracking-[0.2em] text-center mb-16 italic">Timeline Kompetisi</h2>
+            <div class="space-y-12 relative">
+                <div class="absolute left-[21px] top-2 bottom-2 w-0.5 bg-emerald-50"></div>
+                
+                <div class="flex gap-8 items-start relative">
+                    <div class="bg-emerald-600 text-white w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm z-10 shrink-0 shadow-lg shadow-emerald-100">01</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">Pendaftaran & Penyetoran Karya</h4>
+                        <p class="text-sm text-emerald-600 font-bold uppercase tracking-widest mt-1">06 – 19 Februari 2026</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-8 items-start relative">
+                    <div class="bg-slate-200 text-slate-600 w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm z-10 shrink-0">02</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">Proses Penjurian</h4>
+                        <p class="text-sm text-slate-400 font-medium">20 Februari – 03 Maret 2026</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-8 items-start relative">
+                    <div class="bg-emerald-900 text-white w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm z-10 shrink-0">03</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">Pengumuman Pemenang</h4>
+                        <p class="text-sm text-emerald-600 font-bold uppercase tracking-widest mt-1">04 Maret 2026</p>
+                        <p class="text-[10px] text-slate-400 mt-1 uppercase">Lokasi: Nasy'atul Mutaallimin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kategori" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-2xl font-black uppercase tracking-[0.2em] mb-4">Cabang Lomba & Biaya</h2>
+                <p class="text-sm text-slate-500 font-medium italic">Tingkat SLTP/SLTA Sederajat Se-Kabupaten Sumenep</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-10 rounded-[3rem] border border-emerald-400/20 bg-emerald-600 text-white hover:shadow-2xl transition-all group relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="bg-white/20 w-14 h-14 rounded-2xl flex items-center justify-center text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div id="q-Puisi" class="text-[10px] font-black bg-white/20 text-white px-3 py-1 rounded-full uppercase tracking-tighter italic">Cek Kuota...</div>
+                    </div>
+                    <h3 class="text-xl font-black mb-2 uppercase italic relative z-10">Cipta Puisi</h3>
+                    <p class="text-2xl font-black text-emerald-100 mb-6 relative z-10">Rp15.000<span class="text-[10px] text-emerald-200/60 font-bold uppercase tracking-widest ml-1">/Cabang</span></p>
+                    <a href="puisi.html" id="btn-Puisi" class="block text-center text-[10px] font-black bg-white text-emerald-600 px-6 py-4 rounded-2xl uppercase tracking-widest hover:bg-emerald-50 transition relative z-10 shadow-xl">Daftar Sekarang</a>
+                </div>
+
+                <div class="p-10 rounded-[3rem] border border-emerald-400/20 bg-emerald-700 text-white hover:shadow-2xl transition-all group relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="bg-white/20 w-14 h-14 rounded-2xl flex items-center justify-center text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div id="q-Esai" class="text-[10px] font-black bg-white/20 text-white px-3 py-1 rounded-full uppercase tracking-tighter italic">Cek Kuota...</div>
+                    </div>
+                    <h3 class="text-xl font-black mb-2 uppercase italic relative z-10">Cipta Esai</h3>
+                    <p class="text-2xl font-black text-emerald-100 mb-6 relative z-10">Rp15.000<span class="text-[10px] text-emerald-200/60 font-bold uppercase tracking-widest ml-1">/Cabang</span></p>
+                    <a href="esai.html" id="btn-Esai" class="block text-center text-[10px] font-black bg-white text-emerald-700 px-6 py-4 rounded-2xl uppercase tracking-widest hover:bg-emerald-50 transition relative z-10 shadow-xl">Daftar Sekarang</a>
+                </div>
+
+                <div class="p-10 rounded-[3rem] border border-emerald-400/20 bg-emerald-800 text-white hover:shadow-2xl transition-all group relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="bg-white/20 w-14 h-14 rounded-2xl flex items-center justify-center text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div id="q-Cerpen" class="text-[10px] font-black bg-white/20 text-white px-3 py-1 rounded-full uppercase tracking-tighter italic">Cek Kuota...</div>
+                    </div>
+                    <h3 class="text-xl font-black mb-2 uppercase italic relative z-10">Cipta Cerpen</h3>
+                    <p class="text-2xl font-black text-emerald-100 mb-6 relative z-10">Rp15.000<span class="text-[10px] text-emerald-200/60 font-bold uppercase tracking-widest ml-1">/Cabang</span></p>
+                    <a href="cerpen.html" id="btn-Cerpen" class="block text-center text-[10px] font-black bg-white text-emerald-800 px-6 py-4 rounded-2xl uppercase tracking-widest hover:bg-emerald-50 transition relative z-10 shadow-xl">Daftar Sekarang</a>
+                </div>
+            </div>
+
+            <div class="mt-12 p-8 bg-emerald-50 rounded-[2rem] border border-emerald-100 text-center">
+                <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-2">Metode Pembayaran</p>
+                <p class="font-bold text-slate-800">Transfer BRI: <span class="text-emerald-700">6542-01-035459-53-1</span></p>
+                <p class="text-xs text-slate-500 mt-1">Atau bayar tunai langsung melalui panitia</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="ketentuan" class="py-24 px-6 bg-slate-900 text-white rounded-[4rem] mx-4 my-10 shadow-2xl">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-black uppercase tracking-widest mb-16 text-emerald-400 italic text-center">Ketentuan Utama</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="p-6 bg-white/5 rounded-3xl border border-white/10">
+                    <div class="text-emerald-400 mb-4 font-black">#01</div>
+                    <h4 class="font-bold mb-2 uppercase text-sm tracking-tight">Delegasi</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Maksimal 3 peserta per cabang dari tiap sekolah.</p>
+                </div>
+                <div class="p-6 bg-white/5 rounded-3xl border border-white/10">
+                    <div class="text-emerald-400 mb-4 font-black">#02</div>
+                    <h4 class="font-bold mb-2 uppercase text-sm tracking-tight">Orisinalitas</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Karya asli, bukan plagiat, dan dilarang keras menggunakan AI.</p>
+                </div>
+                <div class="p-6 bg-white/5 rounded-3xl border border-white/10">
+                    <div class="text-emerald-400 mb-4 font-black">#03</div>
+                    <h4 class="font-bold mb-2 uppercase text-sm tracking-tight">Konten</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Fokus pada Kebudayaan Sumenep & tidak mengandung SARA.</p>
+                </div>
+                <div class="p-6 bg-white/5 rounded-3xl border border-white/10">
+                    <div class="text-emerald-400 mb-4 font-black">#04</div>
+                    <h4 class="font-bold mb-2 uppercase text-sm tracking-tight">Format File</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Format .docx: Nama_Sekolah_Cabang_Judul</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-24 text-center bg-white border-t border-emerald-50">
+        <div class="max-w-md mx-auto h-px bg-gradient-to-r from-transparent via-emerald-100 to-transparent mb-12"></div>
+        
+        <div class="mb-8">
+            <p class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.3em] mb-6">Hubungi Admin Kami</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 px-6">
+                <a href="https://wa.me/6285955203127" target="_blank" class="w-full md:w-auto inline-flex items-center gap-4 bg-white border border-emerald-100 px-6 py-4 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-300 transition-all group">
+                    <div class="bg-emerald-100 p-2 rounded-xl text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </div>
+                    <div class="text-left leading-tight">
+                        <span class="block text-[8px] font-black text-slate-400 uppercase tracking-widest">Admin 01</span>
+                        <span class="text-xs font-extrabold text-slate-800 tracking-tight group-hover:text-emerald-600 transition">Khairul Yaqin</span>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/6287772162580" target="_blank" class="w-full md:w-auto inline-flex items-center gap-4 bg-white border border-emerald-100 px-6 py-4 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-300 transition-all group">
+                    <div class="bg-emerald-100 p-2 rounded-xl text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </div>
+                    <div class="text-left leading-tight">
+                        <span class="block text-[8px] font-black text-slate-400 uppercase tracking-widest">Admin 02</span>
+                        <span class="text-xs font-extrabold text-slate-800 tracking-tight group-hover:text-emerald-600 transition">Moh. Aqil</span>
+                    </div>
+                </a>
+            </div>
         </div>
 
-        <div class="text-reveal">
-            <div class="title">KHIDMAT</div>
-            <div class="subtitle">RAMADHAN 2026</div>
+        <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-10 px-6">
+            <a href="login.html" class="inline-flex items-center gap-4 bg-slate-50 px-8 py-4 rounded-full border border-slate-100 shadow-sm group hover:border-emerald-200 transition-all">
+                <img src="adlan.ico" alt="Dev Logo" class="h-6 w-6 group-hover:scale-110 transition">
+                <div class="text-left leading-tight">
+                    <span class="block text-[8px] font-black text-slate-400 uppercase tracking-widest">Developed with ❤️ by</span>
+                    <span class="text-xs font-extrabold text-slate-800 tracking-tight group-hover:text-emerald-600 transition">Adlan Madjied Ridho</span>
+                </div>
+            </a>
         </div>
-    </div>
+
+        <div class="flex flex-col items-center gap-6">
+            <div class="flex items-center gap-4">
+                <a href="https://instagram.com/oficial.santrigapura" target="_blank" class="text-slate-400 hover:text-emerald-600 transition font-bold text-[10px] uppercase tracking-widest">Instagram @oficial.santrigapura</a>
+            </div>
+            <p class="text-slate-400 text-[9px] font-black tracking-[0.5em] uppercase px-6 leading-loose">
+                &copy; 2026 PERSATUAN SANTRI GAPURA (PASRA)
+            </p>
+        </div>
+    </footer>
 
     <script>
-        const body = document.getElementById('container-body');
-        const preloader = document.getElementById('preloader');
-        const logoImg = document.getElementById('main-logo');
+        // --- KONFIGURASI SUPABASE ---
+        const SB_URL = "https://glyfbykxbpmtysnlaqcd.supabase.co";
+        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdseWZieWt4YnBtdHlzbmxhcWNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MzQ3ODUsImV4cCI6MjA4NTUxMDc4NX0.nxPRnJ_drfP_gb_MLFbf05COk6JpjyDtHAb4g_NcwYI";
+        const _supabase = supabase.createClient(SB_URL, SB_KEY);
 
-        function startIntro() {
-            // Berikan sedikit jeda tambahan untuk meyakinkan prefetch berjalan
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                    body.classList.add('is-ready');
-                }, 500);
+        // --- SISTEM KUOTA (VERSI RPC) ---
+        const MAX_QUOTA = 50;
+        const categories = ["Puisi", "Esai", "Cerpen"];
 
-                // Jadwal pindah halaman
-                setTimeout(() => {
-                    body.classList.add('fade-exit');
-                    setTimeout(() => {
-                        window.location.href = "beranda.html";
-                    }, 800);
-                }, 5000); 
-            }, 600); 
+        async function updateQuotas() {
+            try {
+                const { data, error } = await _supabase.rpc('get_all_quotas');
+                
+                if (error) throw error;
+
+                categories.forEach(cat => {
+                    const el = document.getElementById(`q-${cat}`);
+                    if (el) el.innerText = `Sisa: ${MAX_QUOTA}`;
+                });
+
+                if (data && data.length > 0) {
+                    data.forEach(row => {
+                        const cat = row.category_name;
+                        const count = row.total_count;
+                        const el = document.getElementById(`q-${cat}`);
+                        const btn = document.getElementById(`btn-${cat}`);
+                        const remaining = MAX_QUOTA - count;
+
+                        if (el && btn) {
+                            if (count >= MAX_QUOTA) {
+                                el.innerText = "PENUH";
+                                el.classList.add('bg-red-500', 'text-white');
+                                el.classList.remove('bg-white/20');
+                                btn.innerText = "Pendaftaran Ditutup";
+                                btn.classList.add('bg-slate-300', 'text-slate-500', 'pointer-events-none', 'shadow-none');
+                                btn.classList.remove('bg-white', 'text-emerald-600', 'text-emerald-700', 'text-emerald-800');
+                            } else {
+                                el.innerText = `Sisa: ${remaining}`;
+                            }
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error("Quota RPC Error:", err);
+            }
         }
+        updateQuotas();
 
-        // Cek pemuatan logo
-        if (logoImg.complete) {
-            startIntro();
-        } else {
-            logoImg.addEventListener('load', startIntro);
-            logoImg.addEventListener('error', startIntro);
-        }
+        // --- SISTEM COUNTDOWN ---
+        const startDate = new Date("February 6, 2026 00:00:00").getTime();
+        const endDate = new Date("February 19, 2026 23:59:59").getTime();
+        
+        setInterval(() => {
+            const now = new Date().getTime();
+            let label = "";
+            let target = 0;
+
+            if (now < startDate) {
+                label = "Pendaftaran Dibuka Dalam";
+                target = startDate;
+            } else if (now < endDate) {
+                label = "Pendaftaran & Penyetoran Karya Berakhir Dalam";
+                target = endDate;
+            } else {
+                document.getElementById('countdown-label').innerText = "Pendaftaran Sudah Ditutup";
+                document.getElementById('countdown').style.opacity = "0.5";
+                return;
+            }
+
+            const distance = target - now;
+            document.getElementById('countdown-label').innerText = label;
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(d).padStart(2, '0');
+            document.getElementById('hours').innerText = String(h).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(m).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(s).padStart(2, '0');
+        }, 1000);
     </script>
 </body>
 </html>
